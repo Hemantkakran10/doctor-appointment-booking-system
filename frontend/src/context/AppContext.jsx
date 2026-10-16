@@ -13,8 +13,21 @@ export const AppProvider = ({ children }) => {
     }, 4500);
   };
 
-  // Base API endpoint fallback to port 5000
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+  // Base API endpoint fallback:
+  // If running on a local network IP (e.g. 192.168.x.x), dynamically use that IP so mobile testing works seamlessly
+  const getFallbackApiUrl = () => {
+    if (
+      typeof window !== 'undefined' &&
+      window.location.hostname &&
+      window.location.hostname !== 'localhost' &&
+      !window.location.hostname.includes('vercel.app')
+    ) {
+      return `http://${window.location.hostname}:5000/api`;
+    }
+    return 'http://localhost:5000/api';
+  };
+
+  const API_URL = import.meta.env.VITE_API_URL || getFallbackApiUrl();
 
   return (
     <AppContext.Provider value={{ loading, setLoading, alert, setAlert, triggerAlert, API_URL }}>
