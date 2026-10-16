@@ -20,11 +20,14 @@ const createTransporter = () => {
     });
   }
 
-  // Gmail SMTP transporter
+  // Gmail SMTP transporter with fast timeouts
   if (user && pass) {
     return nodemailer.createTransport({
       service: 'gmail',
-      auth: { user, pass }
+      auth: { user, pass },
+      connectionTimeout: 4000,
+      greetingTimeout: 4000,
+      socketTimeout: 5000
     });
   }
 

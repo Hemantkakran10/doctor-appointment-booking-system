@@ -71,13 +71,20 @@ export const sendRegisterOtp = async (req, res) => {
       }
     }
 
-    // Send email
-    const mailResult = await sendOtpEmail(trimmedEmail, otp, name);
+    // Send email with timeout protection so serverless function never hangs
+    let mailResult = { delivered: false };
+    try {
+      const emailPromise = sendOtpEmail(trimmedEmail, otp, name);
+      const timeoutPromise = new Promise((resolve) => setTimeout(() => resolve({ delivered: false, timeout: true }), 4000));
+      mailResult = await Promise.race([emailPromise, timeoutPromise]);
+    } catch (mailErr) {
+      console.warn("Mail dispatch error in sendRegisterOtp:", mailErr.message);
+    }
 
     return res.json({
       message: `A 6-digit verification code has been dispatched to ${trimmedEmail}. Please check your inbox.`,
       email: trimmedEmail,
-      delivered: mailResult.delivered
+      delivered: !!mailResult.delivered
     });
   } catch (error) {
     console.error('Send OTP error:', error);
