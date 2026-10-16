@@ -42,11 +42,12 @@ export const sendOtpEmail = async (email, otp, name = 'Patient') => {
   const userName = name.trim() || 'Patient';
   const transporter = createTransporter();
 
-  const user = process.env.SMTP_USER || process.env.EMAIL_USER;
+  const user = (process.env.SMTP_USER || process.env.EMAIL_USER || 'hemantkakran100@gmail.com').trim();
   const mailOptions = {
-    from: process.env.SMTP_FROM || (user ? `"ArogyaCareAI Healthcare" <${user}>` : '"ArogyaCareAI Healthcare" <no-reply@arogyacare.ai>'),
+    from: `"ArogyaCareAI Healthcare" <${user}>`,
     to: userEmail,
-    subject: `🔐 Your ArogyaCareAI Verification Code: ${otp}`,
+    replyTo: user,
+    subject: `ArogyaCareAI Email Verification Code: ${otp}`,
     text: `Hello ${userName},\n\nYour 6-digit verification code for ArogyaCareAI registration is: ${otp}\n\nThis code is valid for 10 minutes. Please do not share this code with anyone.\n\nThank you,\nArogyaCareAI Healthcare Team`,
     html: `
       <!DOCTYPE html>

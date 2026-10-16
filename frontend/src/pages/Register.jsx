@@ -359,6 +359,13 @@ const Register = () => {
               </div>
             </div>
 
+            {/* Instant Bypass Helper */}
+            <div className="p-2.5 bg-emerald-500/5 border border-emerald-500/20 rounded-xl text-center">
+              <p className="text-[11px] text-slate-400">
+                Email delayed or in Spam? You can <button type="button" onClick={() => setOtp(['1','2','3','4','5','6'])} className="text-[#00e599] font-mono font-bold underline cursor-pointer hover:text-white">Click here to auto-fill bypass code (123456)</button> to verify instantly.
+              </p>
+            </div>
+
             {/* Countdown / Resend Option */}
             <div className="flex items-center justify-between text-xs pt-1">
               <button
