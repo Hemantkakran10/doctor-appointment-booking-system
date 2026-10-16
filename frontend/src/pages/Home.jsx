@@ -403,20 +403,28 @@ const Home = () => {
     }
   };
 
-  // Fetch active doctors from backend
-  const fetchDoctors = async () => {
+  // Fetch active doctors from backend with gentle retry for serverless cold starts
+  const fetchDoctors = async (retryCount = 0) => {
     setLoading(true);
     try {
       const res = await fetch(`${API_URL}/doctors`);
-      const data = await res.json();
       if (res.ok) {
-        setDoctors(data);
-      } else {
-        triggerAlert(data.message || 'Failed to fetch doctors', 'error');
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          setDoctors(data);
+          return;
+        }
+      }
+      if (retryCount < 2) {
+        setTimeout(() => fetchDoctors(retryCount + 1), 1000);
       }
     } catch (err) {
-      console.error(err);
-      triggerAlert('Failed to connect to backend', 'error');
+      console.warn("Doctors fetch attempt:", err);
+      if (retryCount < 2) {
+        setTimeout(() => fetchDoctors(retryCount + 1), 1200);
+      } else {
+        triggerAlert('Unable to reach live doctor network. Please check your connection.', 'error');
+      }
     } finally {
       setLoading(false);
     }
