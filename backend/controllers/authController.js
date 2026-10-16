@@ -75,13 +75,9 @@ export const sendRegisterOtp = async (req, res) => {
     const mailResult = await sendOtpEmail(trimmedEmail, otp, name);
 
     return res.json({
-      message: mailResult.delivered
-        ? `A 6-digit verification code has been dispatched to ${trimmedEmail}. Please check your inbox.`
-        : `Verification code generated for ${trimmedEmail}`,
+      message: `A 6-digit verification code has been dispatched to ${trimmedEmail}. Please check your inbox.`,
       email: trimmedEmail,
-      delivered: mailResult.delivered,
-      previewOtp: (!mailResult.delivered || mailResult.simulated) ? otp : undefined,
-      simulated: mailResult.simulated
+      delivered: mailResult.delivered
     });
   } catch (error) {
     console.error('Send OTP error:', error);

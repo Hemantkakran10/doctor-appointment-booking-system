@@ -7,8 +7,8 @@ import nodemailer from 'nodemailer';
 const createTransporter = () => {
   const host = process.env.SMTP_HOST;
   const port = parseInt(process.env.SMTP_PORT || '587', 10);
-  const user = (process.env.SMTP_USER || process.env.EMAIL_USER || '').trim();
-  const rawPass = (process.env.SMTP_PASS || process.env.EMAIL_PASS || '').trim();
+  const user = (process.env.SMTP_USER || process.env.EMAIL_USER || 'hemantkakran100@gmail.com').trim();
+  const rawPass = (process.env.SMTP_PASS || process.env.EMAIL_PASS || 'tcpg ethu rkqb yotm').trim();
   const pass = rawPass.replace(/\s+/g, '');
 
   if (host && user && pass) {
@@ -20,7 +20,7 @@ const createTransporter = () => {
     });
   }
 
-  // If using Gmail shortcut with EMAIL_USER and EMAIL_PASS
+  // Gmail SMTP transporter
   if (user && pass) {
     return nodemailer.createTransport({
       service: 'gmail',

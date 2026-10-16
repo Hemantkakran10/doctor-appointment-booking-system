@@ -38,7 +38,6 @@ const Register = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
-  const [devOtpHint, setDevOtpHint] = useState('');
   const [countdown, setCountdown] = useState(60);
   const [canResend, setCanResend] = useState(false);
   const otpInputRefs = useRef([]);
@@ -91,13 +90,6 @@ const Register = () => {
         formData.password,
         formData.phone
       );
-
-      // If simulated or dev fallback, capture preview OTP
-      if (res?.previewOtp) {
-        setDevOtpHint(res.previewOtp);
-      } else {
-        setDevOtpHint('');
-      }
 
       setStep(2);
       setCountdown(60);
@@ -332,41 +324,18 @@ const Register = () => {
         {step === 2 && (
           <form className="space-y-5" onSubmit={handleVerifyOtp}>
             {/* Live Email Delivery Notice */}
-            {!devOtpHint && (
-              <div className="p-3.5 bg-emerald-500/10 border border-emerald-500/25 rounded-2xl text-center space-y-1 animate-fade-in">
-                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 dark:text-[#00e599]">
-                  <Inbox className="w-4 h-4 text-[#00e599]" />
-                  <span>Verification Email Dispatched</span>
-                </div>
-                <p className="text-[11px] text-slate-600 dark:text-slate-300">
-                  We sent a 6-digit code to <strong className="text-emerald-700 dark:text-[#00e599] font-mono">{formData.email}</strong>.
-                </p>
-                <p className="text-[10px] text-slate-400">
-                  Please check your inbox (and check spam / promotions if not visible within 30 seconds).
-                </p>
+            <div className="p-3.5 bg-emerald-500/10 border border-emerald-500/25 rounded-2xl text-center space-y-1.5 animate-fade-in">
+              <div className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 dark:text-[#00e599]">
+                <Inbox className="w-4 h-4 text-[#00e599]" />
+                <span>Verification Code Sent to Email</span>
               </div>
-            )}
-
-            {/* Dev Mode OTP Hint (Only visible when running in simulated/fallback mode) */}
-            {devOtpHint && (
-              <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-center animate-fade-in">
-                <span className="text-[11px] font-semibold text-emerald-700 dark:text-[#00e599] flex items-center justify-center gap-1">
-                  <KeyRound className="w-3.5 h-3.5" />
-                  <span>Verification Code: <strong className="font-mono text-sm tracking-wider">{devOtpHint}</strong></span>
-                </span>
-                <button
-                  type="button"
-                  onClick={() => {
-                    const digits = devOtpHint.split('');
-                    setOtp(digits);
-                    otpInputRefs.current[5]?.focus();
-                  }}
-                  className="text-[10px] text-emerald-600 dark:text-emerald-400 underline mt-0.5 hover:text-white cursor-pointer"
-                >
-                  Click to Auto-fill Code
-                </button>
-              </div>
-            )}
+              <p className="text-[12px] text-slate-600 dark:text-slate-300">
+                A 6-digit code has been dispatched to <strong className="text-emerald-700 dark:text-[#00e599] font-mono">{formData.email}</strong>.
+              </p>
+              <p className="text-[11px] text-slate-400">
+                Please check your inbox (including <strong>Spam</strong> or <strong>Promotions</strong> folders).
+              </p>
+            </div>
 
             {/* 6 Digit Input Boxes */}
             <div>
