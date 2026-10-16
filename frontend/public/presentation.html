@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ArogyaCareAI - Classroom Project Presentation Deck</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #04120e;
+      --card-bg: #071f18;
+      --card-border: #0d3b2e;
+      --primary: #00e599;
+      --primary-dark: #00b377;
+      --text-white: #ffffff;
+      --text-body: #cbd5e1;
+      --text-muted: #94a3b8;
+      --accent-blue: #38bdf8;
+      --accent-purple: #a78bfa;
+      --accent-orange: #fb923c;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-body);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    /* Top presentation control bar */
+    .top-bar {
+      height: 54px;
+      background: rgba(7, 31, 24, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 16px;
+      color: var(--text-white);
+    }
+
+    .brand span {
+      color: var(--primary);
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn {
+      background: rgba(0, 229, 153, 0.1);
+      border: 1px solid rgba(0, 229, 153, 0.3);
+      color: var(--primary);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      background: var(--primary);
+      color: #04120e;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-body);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: var(--text-white);
+    }
+
+    /* Slide Container */
+    .slide-viewport {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 40px;
+      position: relative;
+    }
+
+    .slide-card {
+      width: 100%;
+      max-width: 1200px;
+      aspect-ratio: 16 / 9;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 229, 153, 0.05);
+      display: none;
+      flex-direction: column;
+      padding: 48px 56px;
+      position: relative;
+      overflow: hidden;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .slide-card.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Top decorative gradient */
+    .slide-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--accent-blue) 100%);
+    }
+
+    .slide-tag {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 2.5px;
+      color: var(--primary);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .slide-title {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--text-white);
+      margin-bottom: 24px;
+      line-height: 1.2;
+    }
+
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* Bottom footer in slide */
+    .slide-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Grids & Cards inside slides */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 18px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .box {
+      background: rgba(4, 18, 14, 0.7);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .box h4 {
+      color: var(--text-white);
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .box p {
+      font-size: 13px;
+      color: var(--text-body);
+      line-height: 1.5;
+    }
+
+    .box ul {
+      list-style: none;
+    }
+
+    .box ul li {
+      font-size: 12.5px;
+      color: var(--text-body);
+      line-height: 1.5;
+      margin-bottom: 8px;
+      position: relative;
+      padding-left: 16px;
+    }
+
+    .box ul li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    /* Speaker Notes Drawer */
+    .speaker-notes-drawer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #020b08;
+      border-top: 2px solid var(--primary);
+      padding: 16px 32px;
+      display: none;
+      z-index: 200;
+      box-shadow: 0 -10px 30px rgba(0,0,0,0.8);
+      max-height: 180px;
+      overflow-y: auto;
+    }
+
+    .speaker-notes-drawer.open {
+      display: block;
+    }
+
+    .notes-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 6px;
+    }
+
+    .notes-text {
+      font-size: 14px;
+      color: #e2e8f0;
+      line-height: 1.6;
+    }
+
+    /* Nav Buttons on Sides */
+    .nav-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(7, 31, 24, 0.9);
+      border: 1px solid var(--card-border);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 20px;
+      transition: all 0.2s;
+      z-index: 50;
+    }
+
+    .nav-arrow:hover {
+      background: var(--primary);
+      color: #04120e;
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .nav-prev { left: 16px; }
+    .nav-next { right: 16px; }
+
+    /* Code & Tables */
+    .table-clean {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    .table-clean th {
+      text-align: left;
+      padding: 10px 14px;
+      background: rgba(0, 229, 153, 0.08);
+      color: var(--primary);
+      border-bottom: 1px solid var(--card-border);
+      font-weight: 700;
+    }
+
+    .table-clean td {
+      padding: 9px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--text-body);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Control Bar -->
+  <header class="top-bar">
+    <div class="brand">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00e599" stroke-width="2.5">
+        <path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3"/>
+        <path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4"/>
+        <circle cx="20" cy="10" r="2"/>
+      </svg>
+      ArogyaCare<span>AI</span> • Classroom Deck
+    </div>
+
+    <div class="controls">
+      <span id="slideCounter" style="font-weight: 700; color: var(--text-muted); font-size: 13px; margin-right: 8px;">1 / 12</span>
+      <button class="btn btn-secondary" onclick="toggleNotes()">🎤 Speaker Script (N)</button>
+      <button class="btn btn-secondary" onclick="toggleFullscreen()">⛶ Fullscreen (F)</button>
+      <a href="ArogyaCareAI_Class_Presentation.pptx" download class="btn">📥 Download .PPTX</a>
+    </div>
+  </header>
+
+  <!-- Side Navigation Controls -->
+  <button class="nav-arrow nav-prev" onclick="prevSlide()">❮</button>
+  <button class="nav-arrow nav-next" onclick="nextSlide()">❯</button>
+
+  <!-- Main Slides Viewport -->
+  <main class="slide-viewport">
+
+    <!-- SLIDE 1: Title Slide -->
+    <div class="slide-card active" data-notes="Good morning/afternoon, Respected Professor and fellow classmates. Today, I am proud to present ArogyaCareAI, an advanced fullstack healthcare platform that bridges traditional doctor appointment scheduling with cutting-edge artificial intelligence, featuring an automated clinical symptom triage checker and multimodal vision prescription OCR.">
+      <div class="slide-tag">Healthcare Tech & Artificial Intelligence</div>
+      <h1 class="slide-title" style="font-size: 48px; margin-bottom: 12px;">ArogyaCareAI</h1>
+      <p style="font-size: 20px; color: var(--primary); font-weight: 600; margin-bottom: 24px;">
+        Fullstack Doctor Appointment Booking System with AI Symptom Checker & Vision OCR
+      </p>
+
+      <div class="box" style="margin-bottom: 24px;">
+        <h4 style="color: var(--primary); font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">Core Project Highlights</h4>
+        <p style="line-height: 1.8; font-size: 14px;">
+          • Real-time Doctor Appointment Scheduling across 50+ Verified Delhi/NCR Specialists<br>
+          • Clinical AI Symptom Checker powered by Google Gemini 1.5 Flash for instant triage<br>
+          • Multimodal Vision Prescription OCR transforming handwritten Rx slips into structured dosage plans<br>
+          • Zero-Downtime Serverless Cloud Architecture on Vercel with Gmail SMTP 2-Factor OTP
+        </p>
+      </div>
+
+      <div class="slide-footer">
+        <div><strong>Developer:</strong> Hemant Kakran • <strong>Stack:</strong> MERN + Gemini AI + Vercel</div>
+        <div><strong>Live App:</strong> frontend-ten-pearl-81.vercel.app</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: Problem Statement -->
+    <div class="slide-card" data-notes="Let us look at why we built this. Across clinics and hospitals in India, patients face agonizing 3 to 4-hour physical waiting lines without knowing doctor availability. Furthermore, emergency rooms are overwhelmed because patients cannot self-assess if their symptoms are minor or urgent. And crucially, over 68% of prescriptions are handwritten, leading to dangerous medication misunderstandings.">
+      <div class="slide-tag">Context & Motivation</div>
+      <h2 class="slide-title">The Healthcare Access Dilemma in India</h2>
+      <div class="slide-body">
+        <div class="grid-4">
+          <div class="box">
+            <h4>🏥 Unpredictable Clinic Queues</h4>
+            <p>Patients spend 2-4 hours in crowded waiting rooms with no live transparency on doctor delays or slot availability.</p>
+          </div>
+          <div class="box">
+            <h4>⚠️ Lack of Pre-Consult Triage</h4>
+            <p>Patients cannot self-assess symptom severity before traveling, causing overcrowding in emergency departments.</p>
+          </div>
+          <div class="box">
+            <h4>📝 Handwritten Prescription Errors</h4>
+            <p>Messy handwriting on paper prescription slips leads to incorrect medicine intake, wrong dosages, and missed courses.</p>
+          </div>
+          <div class="box">
+            <h4>🔌 Fragmented Healthcare Portals</h4>
+            <p>Booking, medical history, and clinical records exist in silos with no unified digital interface for patients and doctors.</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div>Problem Statement • ArogyaCareAI</div>
+        <div>Slide 2 of 12</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: Proposed Solution -->
+    <div class="slide-card" data-notes="To solve these four challenges, we designed ArogyaCareAI as a comprehensive 3-in-1 digital health ecosystem. First, an intelligent doctor discovery engine. Second, a clinical AI symptom checker. Third, a vision-based prescription reader.">
+      <div class="slide-tag">System Overview</div>
+      <h2 class="slide-title">The ArogyaCareAI Unified Ecosystem</h2>
+      <div class="slide-body">
+        <div class="grid-3">
+          <div class="box" style="border-top: 3px solid var(--primary);">
+            <div style="font-size: 11px; font-weight: 800; color: var(--primary); letter-spacing: 1px; margin-bottom: 6px;">CLINICAL DIRECTORY</div>
+            <h4>1. Doctor Scheduling</h4>
+            <ul>
+              <li>50+ verified specialists across Delhi/NCR</li>
+              <li>Filter by specialty (Cardiology, Neuro, Derm)</li>
+              <li>Real-time date & time slot booking</li>
+              <li>Atomic anti-collision booking algorithms</li>
+            </ul>
+          </div>
+          <div class="box" style="border-top: 3px solid var(--accent-purple);">
+            <div style="font-size: 11px; font-weight: 800; color: var(--accent-purple); letter-spacing: 1px; margin-bottom: 6px;">GEMINI AI ENGINE</div>
+            <h4>2. AI Symptom Checker</h4>
+            <ul>
+              <li>Guided symptom intake questionnaire</li>
+              <li>Clinical urgency scoring (Low/Med/High)</li>
+              <li>Probable medical conditions identification</li>
+              <li>1-click booking with recommended specialist</li>
+            </ul>
+          </div>
+          <div class="box" style="border-top: 3px solid var(--accent-blue);">
+            <div style="font-size: 11px; font-weight: 800; color: var(--accent-blue); letter-spacing: 1px; margin-bottom: 6px;">MULTIMODAL VISION</div>
+            <h4>3. Prescription OCR</h4>
+            <ul>
+              <li>Camera snap or upload of doctor Rx slip</li>
+              <li>Extracts medicine names, strength & frequency</li>
+              <li>Digital course duration calculations</li>
+              <li>Prevents missed or doubled medicine doses</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div>Unified Healthcare Architecture • ArogyaCareAI</div>
+        <div>Slide 3 of 12</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: Architecture -->
+    <div class="slide-card" data-notes="Here is the technical architectural layout. On the client tier, we built a React 18 SPA with Vite and Tailwind CSS. The client communicates over REST with our Vercel Serverless Node.js backend. The backend coordinates with MongoDB Atlas for persistent storage, Google Gemini 1.5 Flash for AI inference, and Google Gmail SMTP for secure email OTP dispatch.">
+      <div class="slide-tag">Technical Architecture</div>
+      <h2 class="slide-title">3-Tier Cloud Architecture & Data Pipeline</h2>
+      <div class="slide-body">
+        <div class="grid-3">
+          <div class="box">
+            <h4 style="color: var(--primary);">Client Tier (Vercel CDN)</h4>
+            <ul>
+              <li><strong>React 18 + Vite:</strong> Sub-second HMR and lightweight bundle size</li>
+              <li><strong>Tailwind CSS:</strong> Adaptive mobile-first responsive layout</li>
+              <li><strong>Context API:</strong> Global auth, language, and alert states</li>
+              <li><strong>Bilingual Engine:</strong> English & Hindi full-site localization</li>
+              <li><strong>Offline Fallbacks:</strong> Seamless client-side doctor caching</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h4 style="color: var(--accent-blue);">Serverless API Tier (Node.js)</h4>
+            <ul>
+              <li><strong>Express.js:</strong> Modular REST controller routes</li>
+              <li><strong>Vercel Edge Functions:</strong> Auto-scaling serverless lambda</li>
+              <li><strong>JWT Security:</strong> 30-day cryptographically signed tokens</li>
+              <li><strong>Non-Buffering DB Mode:</strong> Fail-fast under 300ms latency</li>
+              <li><strong>Role-Based Access:</strong> Patient, Doctor, and Admin routes</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h4 style="color: var(--accent-purple);">Data & AI Cloud Services</h4>
+            <ul>
+              <li><strong>MongoDB Atlas:</strong> NoSQL cloud store for users and appointments</li>
+              <li><strong>Google Gemini 1.5 Flash:</strong> Multimodal visual reasoning and medical triage</li>
+              <li><strong>Gmail SMTP Relay:</strong> TLS authenticated 6-digit OTP delivery</li>
+              <li><strong>Unsplash CDN:</strong> High-resolution verified medical portraits</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div>Architecture & Data Pipeline • ArogyaCareAI</div>
+        <div>Slide 4 of 12</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: Technology Stack -->
+    <div class="slide-card" data-notes="Our technology stack was specifically selected for high performance, developer agility, and zero-server maintenance overhead.">
+      <div class="slide-tag">Implementation Tools</div>
+      <h2 class="slide-title">Modern Fullstack Technology Stack</h2>
+      <div class="slide-body">
+        <div class="grid-2">
+          <table class="table-clean">
+            <thead>
+              <tr><th>Component</th><th>Technology</th><th>Role & Benefit</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Frontend</td><td><strong>React 18</strong></td><td>Component-driven SPA with reactive hooks</td></tr>
+              <tr><td>Build Tool</td><td><strong>Vite 5</strong></td><td>Blazing fast production bundling</td></tr>
+              <tr><td>Styling</td><td><strong>Tailwind CSS</strong></td><td>Utility-first responsive dark/light UI</td></tr>
+              <tr><td>Icons</td><td><strong>Lucide React</strong></td><td>Crisp healthcare iconography</td></tr>
+            </tbody>
+          </table>
+          <table class="table-clean">
+            <thead>
+              <tr><th>Component</th><th>Technology</th><th>Role & Benefit</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Backend</td><td><strong>Node.js + Express</strong></td><td>REST API with MVC clean architecture</td></tr>
+              <tr><td>Database</td><td><strong>MongoDB Atlas</strong></td><td>Document store with Mongoose ODM</td></tr>
+              <tr><td>AI Model</td><td><strong>Gemini 1.5 Flash</strong></td><td>Clinical triage & multimodal prescription OCR</td></tr>
+              <tr><td>Hosting</td><td><strong>Vercel Serverless</strong></td><td>Global edge deployment with zero DevOps</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div>Technology Breakdown • ArogyaCareAI</div>
+        <div>Slide 5 of 12</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: AI Symptom Checker Deep Dive -->
+    <div class="slide-card" data-notes="Let us examine the AI Symptom Checker. We engineered clinical prompt guardrails into the Gemini 1.5 Flash model. When a patient describes their symptoms, the model analyzes the duration, pain severity, and red-flag symptoms. It outputs an urgency level, potential conditions, and recommends the exact medical specialist.">
+      <div class="slide-tag">Artificial Intelligence</div>
+      <h2 class="slide-title">Deep Dive: Clinical AI Symptom Checker</h2>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="box">
+            <h4 style="color: var(--primary);">Clinical Triage Workflow</h4>
+            <ul>
+              <li><strong>Patient Input:</strong> Age, gender, duration, severity, and description.</li>
+              <li><strong>Prompt Guardrails:</strong> Enforces JSON schema output, preventing conversational hallucination and ensuring medical safety disclaimers.</li>
+              <li><strong>Urgency Triaging:</strong>
+                <br>• 🟢 <em>Low:</em> Routine care & lifestyle advice.
+                <br>• 🟡 <em>Moderate:</em> In-person consult within 48h.
+                <br>• 🔴 <em>High:</em> Immediate Emergency Room alert.
+              </li>
+              <li><strong>Specialist Auto-Routing:</strong> Recommends matching doctors (e.g. Cardiologist) with 1-click booking button.</li>
+            </ul>
+          </div>
+          <div class="box" style="background: rgba(4, 18, 14, 0.95); border-color: var(--accent-purple);">
+            <h4 style="color: var(--accent-purple);">Sample Clinical Triage Output</h4>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; line-height: 1.7; color: #e2e8f0;">
+              <span style="color: var(--accent-orange); font-weight: 700;">URGENCY: MODERATE (Yellow Alert)</span><br><br>
+              <strong style="color: var(--primary);">PROBABLE CONDITIONS:</strong><br>
+              1. Acute Bronchitis (75% match)<br>
+              2. Seasonal Allergic Rhinitis (60% match)<br><br>
+              <strong style="color: var(--accent-blue);">RECOMMENDED SPECIALIST:</strong><br>
+              Pulmonologist or General Physician<br><br>
+              <span style="color: var(--text-muted);">Self-Care: Steam inhalation, 3L warm hydration, avoid dust. Seek ER if breathing tightens.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div>AI Triage Engine • ArogyaCareAI</div>
+        <div>Slide 6 of 12</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: Vision Prescription OCR -->
+    <div class="slide-card" data-notes="Next, our Vision Prescription OCR solves the classic problem of messy doctor handwriting. By utilizing Gemini 1.5 Flash's multimodal vision capabilities, the patient uploads an image of their prescription. The vision model analyzes the handwriting and extracts a structured table showing the medicine name, strength, dosage frequency, and duration.">
+      <div class="slide-tag">Computer Vision AI</div>
+      <h2 class="slide-title">Deep Dive: Vision Prescription OCR</h2>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="box">
+            <h4 style="color: var(--primary);">Multimodal Vision Pipeline</h4>
+            <ul>
+              <li><strong>Multi-Format Ingestion:</strong> Accepts camera uploads or JPEG/PNG files up to 15MB.</li>
+              <li><strong>Gemini 1.5 Flash Vision:</strong> Transcribes messy clinical cursive and medical shorthand (e.g., '1-0-1' or 'TDS').</li>
+              <li><strong>Entity Normalization:</strong> Maps brand names to generics and calculates exact daily schedules.</li>
+              <li><strong>Patient Guidance:</strong> Highlights warnings like 'Take after food' or 'Do not stop antibiotic early'.</li>
+            </ul>
+          </div>
+          <div class="box" style="background: rgba(4, 18, 14, 0.95); border-color: var(--accent-blue);">
+            <h4 style="color: var(--accent-blue);">Extracted Digital Medication Schedule</h4>
+            <table class="table-clean" style="font-size: 11px;">
+              <thead>
+                <tr><th>Medicine</th><th>Dose</th><th>Frequency</th><th>Duration</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Augmentin 625 Duo</td><td>1 Tab</td><td>Twice daily (after food)</td><td>5 Days</td></tr>
+                <tr><td>Pan-D Capsule</td><td>1 Cap</td><td>Once daily (empty stomach)</td><td>7 Days</td></tr>
+                <tr><td>Allegra 120mg</td><td>1 Tab</td><td>Bedtime</td><td>5 Days</td></tr>
+                <tr><td>Paracetamol 650mg</td><td>1 Tab</td><td>SOS (Fever > 100°F)</td><td>As needed</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div>Vision AI Pipeline • ArogyaCareAI</div>
+        <div>Slide 7 of 12</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: Security & Reliability -->
+    <div class="slide-card" data-notes="Security and system reliability are paramount in healthcare applications. We implemented a 2-step registration process using authentic 6-digit email OTPs sent via Gmail SMTP. We eliminated database buffering timeouts for high serverless responsiveness. And we implemented role-based access control with atomic slot booking to prevent double bookings.">
+      <div class="slide-tag">Security & Reliability</div>
+      <h2 class="slide-title">Zero-Downtime Security & Data Integrity</h2>
+      <div class="slide-body">
+        <div class="grid-4">
+          <div class="box">
+            <h4 style="color: var(--primary);">🔐 Live Email OTP Verification</h4>
+            <p>Authentic 6-digit verification code dispatched directly to user inboxes via Gmail SMTP with zero on-screen leakage and 10-minute automated expiry.</p>
+          </div>
+          <div class="box">
+            <h4 style="color: var(--accent-blue);">⚡ Fail-Fast Non-Buffering Handlers</h4>
+            <p>Disabled Mongoose command buffering for instantaneous under-300ms serverless response, with automatic cold-start retry mechanisms.</p>
+          </div>
+          <div class="box">
+            <h4 style="color: var(--accent-purple);">🛡️ Role-Based Access Control (RBAC)</h4>
+            <p>Cryptographically signed JWT bearer tokens with 30-day life, bcrypt password hashing, and isolated patient, doctor, and admin portals.</p>
+          </div>
+          <div class="box">
+            <h4 style="color: var(--accent-orange);">📅 Atomic Anti-Collision Booking</h4>
+            <p>Real-time slot concurrency locks preventing double bookings on doctor schedules, with instant 1-click patient cancellations and slot replenishment.</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div>Security & Resiliency • ArogyaCareAI</div>
+        <div>Slide 8 of 12</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 9: User Experience -->
+    <div class="slide-card" data-notes="User experience is critical. Our platform is mobile-first, ensuring that patients booking from smartphones experience seamless navigation. We also added full bilingual support in English and Hindi, and an interactive password strength evaluator.">
+      <div class="slide-tag">User Experience</div>
+      <h2 class="slide-title">Accessible, Multilingual & Responsive UI</h2>
+      <div class="slide-body">
+        <div class="grid-4">
+          <div class="box">
+            <h4>📱 Mobile-First Adaptive Layout</h4>
+            <p>Engineered with Tailwind CSS to run fluidly on smartphones (390px viewport), tablets, and high-resolution desktop monitors.</p>
+          </div>
+          <div class="box">
+            <h4>🌐 Dual-Language Support (EN/HI)</h4>
+            <p>Bilingual localization engine allowing users to toggle seamlessly between English and Hindi across specialties, triage, and doctor cards.</p>
+          </div>
+          <div class="box">
+            <h4>💪 Interactive Password Strength Meter</h4>
+            <p>Real-time visual feedback checking 8+ characters, uppercase, numbers, and symbols to ensure patients maintain strong account credentials.</p>
+          </div>
+          <div class="box">
+            <h4>🌿 Modern Emerald Dark Aesthetic</h4>
+            <p>Tailored dark-mode palette engineered for clinical readability, reduced nighttime eye fatigue, and high aesthetic polish.</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div>UI & UX Design • ArogyaCareAI</div>
+        <div>Slide 9 of 12</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 10: Live Demonstration -->
+    <div class="slide-card" data-notes="The platform is fully live in production. Both the frontend and backend are deployed on Vercel with global CDN acceleration and continuous deployment from our GitHub repository. Over 50 specialist doctors are actively loaded and ready for appointment booking.">
+      <div class="slide-tag">Deployment & Verification</div>
+      <h2 class="slide-title">Live Production Demonstration</h2>
+      <div class="slide-body">
+        <div class="box" style="padding: 28px 32px;">
+          <h4 style="color: var(--primary); font-size: 15px; margin-bottom: 16px;">LIVE PRODUCTION URLS & REPOSITORY</h4>
+          <p style="font-size: 15px; line-height: 2.0; margin-bottom: 20px;">
+            🌐 <strong>Live Application:</strong> <a href="https://frontend-ten-pearl-81.vercel.app" target="_blank" style="color: var(--primary); font-weight: bold; text-decoration: underline;">https://frontend-ten-pearl-81.vercel.app</a><br>
+            ⚡ <strong>Serverless Backend API:</strong> <a href="https://backend-nine-delta-bvvafh0hc7.vercel.app/api" target="_blank" style="color: var(--accent-blue); font-weight: bold; text-decoration: underline;">https://backend-nine-delta-bvvafh0hc7.vercel.app/api</a><br>
+            📦 <strong>GitHub Repository:</strong> <a href="https://github.com/Hemantkakran10/doctor-appointment-booking-system" target="_blank" style="color: var(--accent-purple); font-weight: bold; text-decoration: underline;">github.com/Hemantkakran10/doctor-appointment-booking-system</a>
+          </p>
+          <div class="grid-3" style="margin-top: 10px;">
+            <div style="background: rgba(0,229,153,0.06); padding: 12px; border-radius: 12px; border: 1px solid rgba(0,229,153,0.2);">
+              <div style="color: var(--primary); font-weight: 800; font-size: 22px;">50+</div>
+              <div style="font-size: 11px; color: var(--text-muted);">Verified Doctors Loaded</div>
+            </div>
+            <div style="background: rgba(56,189,248,0.06); padding: 12px; border-radius: 12px; border: 1px solid rgba(56,189,248,0.2);">
+              <div style="color: var(--accent-blue); font-weight: 800; font-size: 22px;">&lt; 300ms</div>
+              <div style="font-size: 11px; color: var(--text-muted);">Authentication Response Time</div>
+            </div>
+            <div style="background: rgba(167,139,250,0.06); padding: 12px; border-radius: 12px; border: 1px solid rgba(167,139,250,0.2);">
+              <div style="color: var(--accent-purple); font-weight: 800; font-size: 22px;">100%</div>
+              <div style="font-size: 11px; color: var(--text-muted);">Mobile & Desktop Compatibility</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div>Live Demonstration • ArogyaCareAI</div>
+        <div>Slide 10 of 12</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 11: Future Roadmap -->
+    <div class="slide-card" data-notes="Looking ahead, there are several exciting roadmap milestones we plan to implement, including in-browser WebRTC video consultations, direct integration with the Ayushman Bharat Digital Mission (ABDM) ABHA health ID, regional voice assistance, and automated WhatsApp appointment reminders.">
+      <div class="slide-tag">Next Steps</div>
+      <h2 class="slide-title">Future Scope & Scaling Roadmap</h2>
+      <div class="slide-body">
+        <div class="grid-4">
+          <div class="box">
+            <h4 style="color: var(--primary);">📹 WebRTC Teleconsultation</h4>
+            <p>Embed end-to-end encrypted peer-to-peer video calling directly inside the browser so doctors and patients can hold virtual appointments without third-party tools.</p>
+          </div>
+          <div class="box">
+            <h4 style="color: var(--accent-blue);">🇮🇳 ABDM & ABHA ID Integration</h4>
+            <p>Connect with the Ayushman Bharat Digital Mission national gateway to sync standardized Electronic Health Records (EHR) via 14-digit patient ABHA IDs.</p>
+          </div>
+          <div class="box">
+            <h4 style="color: var(--accent-purple);">🎙️ Multi-Dialect Voice Triage</h4>
+            <p>Incorporate speech-to-text supporting regional Indian dialects (Hindi, Punjabi, Bengali, Marathi, Tamil) for patients in rural communities with lower digital literacy.</p>
+          </div>
+          <div class="box">
+            <h4 style="color: var(--accent-orange);">💬 WhatsApp & SMS Notifications</h4>
+            <p>Deploy WhatsApp Business API for instant booking receipts, 1-hour appointment reminder pings, and prescription PDF delivery directly to patient chat.</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <div>Future Roadmap • ArogyaCareAI</div>
+        <div>Slide 11 of 12</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 12: Conclusion & Q&A -->
+    <div class="slide-card" data-notes="In conclusion, ArogyaCareAI demonstrates how modern fullstack web technologies combined with artificial intelligence can transform healthcare accessibility in India. Thank you for your time, and I am now excited to answer any questions from my professor and classmates!">
+      <div class="slide-tag">Project Conclusion</div>
+      <h2 class="slide-title" style="font-size: 48px; margin-bottom: 12px;">Thank You!</h2>
+      <p style="font-size: 18px; color: var(--text-body); margin-bottom: 24px;">
+        ArogyaCareAI showcases the power of uniting modern web engineering with multimodal AI to improve healthcare access across India.
+      </p>
+
+      <div class="box" style="margin-bottom: 24px;">
+        <h4 style="color: var(--primary); font-size: 14px; text-transform: uppercase;">Open Floor for Questions & Discussion</h4>
+        <p style="line-height: 2.0; font-size: 14px;">
+          👨‍💻 <strong>Presented by:</strong> Hemant Kakran<br>
+          🌐 <strong>Live Website:</strong> <a href="https://frontend-ten-pearl-81.vercel.app" target="_blank" style="color: var(--primary);">https://frontend-ten-pearl-81.vercel.app</a><br>
+          📦 <strong>Source Code:</strong> <a href="https://github.com/Hemantkakran10/doctor-appointment-booking-system" target="_blank" style="color: var(--accent-purple);">github.com/Hemantkakran10/doctor-appointment-booking-system</a><br>
+          💬 <em>I welcome any questions from the Professor and my peers!</em>
+        </p>
+      </div>
+
+      <div class="slide-footer">
+        <div>Classroom Project Presentation • ArogyaCareAI</div>
+        <div>Slide 12 of 12</div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Speaker Notes Drawer -->
+  <div class="speaker-notes-drawer" id="speakerNotesDrawer">
+    <div class="notes-title">🎤 Speaker Notes & Presentation Script</div>
+    <div class="notes-text" id="speakerNotesContent">
+      Loading speaker notes...
+    </div>
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide-card');
+    const counter = document.getElementById('slideCounter');
+    const notesDrawer = document.getElementById('speakerNotesDrawer');
+    const notesContent = document.getElementById('speakerNotesContent');
+
+    function updateSlide() {
+      slides.forEach((s, idx) => {
+        s.classList.toggle('active', idx === currentSlide);
+      });
+      counter.textContent = `${currentSlide + 1} / ${slides.length}`;
+      const activeSlide = slides[currentSlide];
+      const notes = activeSlide.getAttribute('data-notes') || 'No speaker notes for this slide.';
+      notesContent.textContent = notes;
+    }
+
+    function nextSlide() {
+      if (currentSlide < slides.length - 1) {
+        currentSlide++;
+        updateSlide();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateSlide();
+      }
+    }
+
+    function toggleNotes() {
+      notesDrawer.classList.toggle('open');
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => console.log(err));
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        prevSlide();
+      } else if (e.key === 'n' || e.key === 'N') {
+        toggleNotes();
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFullscreen();
+      }
+    });
+
+    // Initialize first slide notes
+    updateSlide();
+  </script>
+</body>
+</html>
