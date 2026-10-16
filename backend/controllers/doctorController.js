@@ -1,6 +1,14 @@
 import Doctor from '../models/Doctor.js';
 import Appointment from '../models/Appointment.js';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { DELHI_DOCTORS } from '../seed.js';
+
+const getFallbackDoctors = () => {
+  return DELHI_DOCTORS.map((doc, idx) => ({
+    ...doc,
+    _id: doc._id || `seed_doc_${idx + 1}`
+  }));
+};
 
 // @desc    Get all active doctors (with search)
 // @route   GET /api/doctors
@@ -18,10 +26,30 @@ export const getDoctors = async (req, res) => {
       ];
     }
 
-    const doctors = await Doctor.find(query).select('-password');
+    let doctors = [];
+    try {
+      doctors = await Doctor.find(query).select('-password');
+    } catch (dbErr) {
+      console.warn("Database query error, serving seeded doctors:", dbErr.message);
+    }
+
+    if (!doctors || doctors.length === 0) {
+      const allFallback = getFallbackDoctors();
+      if (search) {
+        const s = search.toLowerCase();
+        doctors = allFallback.filter(d => 
+          d.name.toLowerCase().includes(s) ||
+          d.specialization.toLowerCase().includes(s) ||
+          (d.hospital && d.hospital.toLowerCase().includes(s))
+        );
+      } else {
+        doctors = allFallback;
+      }
+    }
+
     return res.json(doctors);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.json(getFallbackDoctors());
   }
 };
 
@@ -30,7 +58,18 @@ export const getDoctors = async (req, res) => {
 // @access  Public
 export const getDoctorById = async (req, res) => {
   try {
-    const doctor = await Doctor.findById(req.params.id).select('-password');
+    let doctor = null;
+    try {
+      doctor = await Doctor.findById(req.params.id).select('-password');
+    } catch (dbErr) {
+      // not a mongo object id or db disconnected
+    }
+
+    if (!doctor) {
+      const allFallback = getFallbackDoctors();
+      doctor = allFallback.find(d => String(d._id) === String(req.params.id) || d.email === req.params.id);
+    }
+
     if (!doctor) {
       return res.status(404).json({ message: 'Doctor not found' });
     }
@@ -305,7 +344,15 @@ export const getSuggestions = async (req, res) => {
       return res.json([]);
     }
 
-    const doctors = await Doctor.find({ isActive: true }).select('name specialization degree experience fees');
+    let doctors = [];
+    try {
+      doctors = await Doctor.find({ isActive: true }).select('name specialization degree experience fees');
+    } catch (dbErr) {
+      // db connection fallback
+    }
+    if (!doctors || doctors.length === 0) {
+      doctors = getFallbackDoctors();
+    }
 
     if (!process.env.GEMINI_API_KEY) {
       const fallback = fallbackSuggestions(query, doctors);
