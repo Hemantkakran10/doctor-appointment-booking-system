@@ -824,4 +824,11 @@ const seedData = async () => {
   }
 };
 
-seedData();
+// Only execute seedData if run directly from the command line (e.g. node seed.js)
+if (process.argv[1] && (process.argv[1].endsWith('seed.js') || process.argv[1].includes('seed.js'))) {
+  seedData();
+}
+
+export { seedData };
+
+
