@@ -1,0 +1,25 @@
+services:
+  # Backend Express REST API on Render
+  - type: web
+    name: arogyacare-backend
+    runtime: node
+    plan: free
+    region: oregon
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: MONGO_URI
+        sync: false # Set in Render Dashboard: your MongoDB Atlas URI
+      - key: EMAIL_USER
+        value: hemantkakran100@gmail.com
+      - key: EMAIL_PASS
+        sync: false # Set in Render Dashboard: Gmail App Password

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ArogyaCareAI | Developer Documentation</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --slate-800: #1e293b;
+      --slate-600: #475569;
+      --slate-400: #94a3b8;
+      --slate-100: #f1f5f9;
+      --slate-50: #f8fafc;
+      --emerald: #10b981;
+      --amber: #f59e0b;
+      --red: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--slate-800);
+      background-color: #ffffff;
+      line-height: 1.6;
+      padding: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    h1, h2, h3, h4 {
+      color: var(--slate-800);
+      font-weight: 800;
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+      page-break-after: avoid;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      border-bottom: 2px solid var(--slate-100);
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      border-bottom: 1px solid var(--slate-100);
+      padding-bottom: 0.25rem;
+      margin-top: 2rem;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+    }
+
+    p {
+      margin-bottom: 1rem;
+      color: var(--slate-600);
+      font-size: 0.95rem;
+    }
+
+    ul, ol {
+      margin-bottom: 1rem;
+      padding-left: 1.5rem;
+      color: var(--slate-600);
+      font-size: 0.95rem;
+    }
+
+    li {
+      margin-bottom: 0.4rem;
+    }
+
+    code {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: var(--slate-100);
+      padding: 0.15rem 0.35rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      color: var(--primary-dark);
+    }
+
+    pre {
+      background-color: var(--slate-50);
+      border: 1px solid var(--slate-100);
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin-bottom: 1rem;
+      page-break-inside: avoid;
+    }
+
+    pre code {
+      background-color: transparent;
+      padding: 0;
+      color: var(--slate-800);
+      font-size: 0.8rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+      page-break-inside: avoid;
+    }
+
+    th, td {
+      padding: 0.65rem;
+      text-align: left;
+      border-bottom: 1px solid var(--slate-100);
+      font-size: 0.9rem;
+    }
+
+    th {
+      background-color: var(--slate-50);
+      font-weight: 700;
+      color: var(--slate-800);
+    }
+
+    .cover {
+      height: 90vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      border: 2px solid var(--slate-100);
+      border-radius: 16px;
+      padding: 3rem;
+      margin-bottom: 4rem;
+      page-break-after: always;
+    }
+
+    .cover-title {
+      font-size: 3rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      font-weight: 800;
+    }
+
+    .cover-subtitle {
+      font-size: 1.25rem;
+      color: var(--slate-600);
+      margin-bottom: 3rem;
+      font-weight: 400;
+    }
+
+    .metadata-box {
+      border-top: 1px solid var(--slate-100);
+      padding-top: 2rem;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .metadata-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .metadata-label {
+      color: var(--slate-400);
+      font-weight: 500;
+    }
+
+    .metadata-val {
+      color: var(--slate-800);
+      font-weight: 600;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      border-radius: 9999px;
+      letter-spacing: 0.05em;
+    }
+
+    .badge-primary { background-color: #eff6ff; color: #1e40af; }
+    .badge-emerald { background-color: #ecfdf5; color: #065f46; }
+    .badge-amber { background-color: #fffbeb; color: #92400e; }
+    .badge-red { background-color: #fef2f2; color: #991b1b; }
+
+    /* Print styling rules */
+    @media print {
+      body {
+        padding: 0;
+        max-width: 100%;
+      }
+      .no-print {
+        display: none;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+      .cover {
+        height: 100%;
+        border: none;
+        padding-top: 5cm;
+      }
+      h2 {
+        margin-top: 3cm;
+      }
+      pre {
+        border: 1px solid #ccc;
+        background-color: #fff;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cover Page -->
+  <div class="cover">
+    <div style="font-size: 4rem; margin-bottom: 1rem;">🩺</div>
+    <div class="cover-title">ArogyaCareAI Systems</div>
+    <div class="cover-subtitle">Doctor Appointment Booking System Implementation Manual</div>
+    
+    <div class="metadata-box">
+      <div class="metadata-row">
+        <span class="metadata-label">System Type</span>
+        <span class="metadata-val">MERN Stack (Vite + Express)</span>
+      </div>
+      <div class="metadata-row">
+        <span class="metadata-label">Auth Protocol</span>
+        <span class="metadata-val">JWT & Role-Based RBAC</span>
+      </div>
+      <div class="metadata-row">
+        <span class="metadata-label">Styling Framework</span>
+        <span class="metadata-val">Tailwind CSS (Slate/Blue)</span>
+      </div>
+      <div class="metadata-row">
+        <span class="metadata-label">Document Date</span>
+        <span class="metadata-val">July 2026</span>
+      </div>
+    </div>
+    
+    <p class="no-print" style="margin-top: 4rem; font-size: 0.8rem; font-weight: 600; color: var(--primary);">
+      💡 Tip: Press Ctrl + P in your browser and choose "Save as PDF" to export this guide.
+    </p>
+  </div>
+
+  <!-- Document Body -->
+  <h1>Project Documentation</h1>
+  <p>
+    This guide outlines the architecture, database designs, API endpoints, and React component workflows implemented in the ArogyaCareAI Doctor Appointment Booking System.
+  </p>
+
+  <h2>1. Modular Project Tree</h2>
+  <pre><code>doctor-appointment-booking-system/
+├── backend/
+│   ├── config/db.js                 # MongoDB connection logic
+│   ├── controllers/
+│   │   ├── authController.js        # User/Doctor authentication controllers
+│   │   ├── doctorController.js      # Doctor profile & analytics logic
+│   │   ├── appointmentController.js # Booking creation & releasing slots
+│   │   └── adminController.js       # System stats & credentials creation
+│   ├── middleware/
+│   │   ├── authMiddleware.js        # JWT validation & RBAC filters
+│   │   └── errorMiddleware.js       # Global 404 & 500 interceptors
+│   ├── models/
+│   │   ├── User.js                  # Patient & Admin schema
+│   │   ├── Doctor.js                # Doctor schema with slot matrix
+│   │   └── Appointment.js           # Transaction schema
+│   ├── routes/                      # Route maps
+│   ├── server.js                    # Server launcher
+│   └── seed.js                      # Database mock-data populator
+└── frontend/
+    ├── src/
+    │   ├── components/              # Buttons, forms, and cards
+    │   ├── context/                 # Auth & global state stores
+    │   ├── pages/                   # User dashboards & home layouts
+    │   ├── App.jsx                  # Main router & overlays
+    │   └── index.css                # Custom animations & Tailwind base</code></pre>
+
+  <h2>2. Database Collection Schemas</h2>
+  
+  <h3>User Schema (Patients & Admins)</h3>
+  <p>Stores patient details and administrator accounts. Includes automatic Bcrypt encryption pre-save hooks.</p>
+  <pre><code>const userSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true, lowercase: true },
+  password: { type: String, required: true, select: false },
+  role: { type: String, enum: ['Patient', 'Admin'], default: 'Patient' },
+  phone: { type: String, required: true }
+}, { timestamps: true });</code></pre>
+
+  <h3>Doctor Schema</h3>
+  <p>Stores practitioner details, specialization badges, and booking matrixes.</p>
+  <pre><code>const doctorSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true, select: false },
+  specialization: { type: String, required: true },
+  degree: { type: String, required: true },
+  experience: { type: Number, required: true },
+  fees: { type: Number, required: true },
+  slots_booked: { type: Map, of: [String], default: {} }, // Key is YYYY-MM-DD
+  isActive: { type: Boolean, default: true },
+  role: { type: String, default: 'Doctor' }
+}, { timestamps: true });</code></pre>
+
+  <h3>Appointment Schema</h3>
+  <p>Stores transactional booking references linking Patients and Doctors.</p>
+  <pre><code>const appointmentSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  docId: { type: mongoose.Schema.Types.ObjectId, ref: 'Doctor', required: true },
+  slotDate: { type: String, required: true }, // YYYY-MM-DD
+  slotTime: { type: String, required: true }, // HH:MM AM/PM
+  amount: { type: Number, required: true },
+  cancelled: { type: Boolean, default: false },
+  isCompleted: { type: Boolean, default: false }
+}, { timestamps: true });</code></pre>
+
+  <h2>3. Double-Booking Validation Logic</h2>
+  <p>
+    To protect the database from double-bookings, the system inspects the doctor's <code>slots_booked</code> Map before registering the appointment transaction. If the time is available, it appends the hour to that date and saves the doctor. Upon cancellation, it filters out the hour, releasing the slot.
+  </p>
+  <pre><code>// In backend/controllers/appointmentController.js
+const bookedSlots = doctor.slots_booked.get(slotDate) || [];
+
+// Check double-booking
+if (bookedSlots.includes(slotTime)) {
+  return res.status(400).json({ message: 'This time slot is already booked' });
+}
+
+// Proceed to book
+const appointment = await Appointment.create({ userId: req.user._id, docId, slotDate, slotTime, amount: doctor.fees });
+bookedSlots.push(slotTime);
+doctor.slots_booked.set(slotDate, bookedSlots);
+await doctor.save();</code></pre>
+
+  <h2>4. Secure Authorization Middleware</h2>
+  <p>
+    The system verifies clients using a Bearer token. Once verified, the credentials can be restricted using a curry filter matching specific role constraints:
+  </p>
+  <pre><code>// In backend/middleware/authMiddleware.js
+export const restrictTo = (...roles) => {
+  return (req, res, next) => {
+    if (!req.user || !roles.includes(req.user.role)) {
+      return res.status(403).json({
+        message: `Access denied. Role '${req.user ? req.user.role : 'None'}' is unauthorized.`
+      });
+    }
+    next();
+  };
+};</code></pre>
+
+  <h2>5. REST API Routing Registry</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Method</th>
+        <th>Endpoint</th>
+        <th>Access Level</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="badge badge-emerald">POST</span></td>
+        <td><code>/api/auth/register</code></td>
+        <td>Public</td>
+        <td>Register patient account</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-emerald">POST</span></td>
+        <td><code>/api/auth/login</code></td>
+        <td>Public</td>
+        <td>Unified credentials validator (all roles)</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-primary">GET</span></td>
+        <td><code>/api/doctors</code></td>
+        <td>Public</td>
+        <td>Query list of active doctors</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-emerald">POST</span></td>
+        <td><code>/api/appointments</code></td>
+        <td>Patient</td>
+        <td>Create booking and lock doctor slot</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-amber">PUT</span></td>
+        <td><code>/api/appointments/:id/cancel</code></td>
+        <td>Patient</td>
+        <td>Cancel booking and release doctor slot</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-amber">PUT</span></td>
+        <td><code>/api/doctors/profile</code></td>
+        <td>Doctor</td>
+        <td>Update consultation fees & status</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-primary">GET</span></td>
+        <td><code>/api/admin/stats</code></td>
+        <td>Admin</td>
+        <td>Calculate total users and system revenue</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-emerald">POST</span></td>
+        <td><code>/api/admin/doctors</code></td>
+        <td>Admin</td>
+        <td>Manually add verified doctor profiles</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>6. Generative AI & Clinical LLM Suite</h2>
+  <p>
+    ArogyaCare integrates state-of-the-art Generative AI and Multimodal Computer Vision:
+  </p>
+  <ul>
+    <li><strong>Intelligent Symptom Analysis</strong>: Natural language symptom input with automated clinical triage categorization (Urgent, Moderate, Mild), differential condition consideration, and AI-driven doctor matching.</li>
+    <li><strong>AI-Driven Doctor Recommendations</strong>: Dynamically scores and recommends verified clinic network practitioners matching identified medical specializations with 1-click slot booking.</li>
+    <li><strong>24/7 Conversational Medical Chatbot</strong>: Persistent floating AI health assistant for patient inquiries, doctor specialty guidance, appointment booking assistance, and clinical preparation advice.</li>
+    <li><strong>Advanced Multimodal OCR Technology</strong>: Decodes handwritten and printed doctor prescriptions (translates Latin abbreviations like OD, BD, TDS, PC, HS into plain language) and analyzes laboratory diagnostic reports (CBC, Lipid profile, Metabolic panel) with biomarker reference range evaluation, abnormal value highlighting, and specialist consultation links.</li>
+  </ul>
+
+  <h2>7. Front-End Context Architecture</h2>
+  <p>
+    The Client UI uses React Context providers to handle auth states and global triggers:
+  </p>
+  <ul>
+    <li><strong>AppContext</strong>: Stores global loading flags (toggles backdrop overlays) and manages fading dialog messages.</li>
+    <li><strong>AuthContext</strong>: Caches JWT signatures, runs startup handshakes to restore profiles on boot, and redirects users to role dashboards after validation.</li>
+    <li><strong>ThemeContext</strong>: Manages light and full-site dark mode themes, persisting preferences in local storage.</li>
+  </ul>
+
+  <h2>8. How to Export to PDF</h2>
+  <ol>
+    <li>Open this file (<code>Project_Documentation.html</code>) in any modern browser (Chrome, Edge, Firefox).</li>
+    <li>Press <strong>Ctrl + P</strong> (Windows) or <strong>Cmd + P</strong> (Mac).</li>
+    <li>Set the Destination to <strong>Save as PDF</strong>.</li>
+    <li>Verify that the "Background graphics" checkbox is checked in the print setting details.</li>
+    <li>Click <strong>Save</strong> and select your target directory.</li>
+  </ol>
+
+</body>
+</html>
