@@ -49,12 +49,12 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Brand Logo */}
-          <Link to="/" className="flex items-center gap-2.5 group">
-            <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-[#00e599] group-hover:scale-105 transition-transform shadow-sm shadow-[#00e599]/10">
-              <Stethoscope className="h-5 w-5 text-[#00e599]" />
+          <Link to="/" className="flex items-center gap-2 sm:gap-2.5 group shrink-0">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-[#00e599] group-hover:scale-105 transition-transform shadow-sm shadow-[#00e599]/10 shrink-0">
+              <Stethoscope className="h-4 w-4 sm:h-5 sm:w-5 text-[#00e599]" />
             </div>
-            <span className="font-extrabold text-xl tracking-tight text-slate-900 dark:text-white flex items-center">
-              ArogyaCare<span className="text-[#00c985] dark:text-[#00e599]">AI</span>
+            <span className="font-extrabold text-base sm:text-xl tracking-tight text-slate-900 dark:text-white flex items-center shrink-0">
+              ArogyaCare<span className="text-[#00c985] dark:text-[#00e599] ml-0.5">AI</span>
             </span>
           </Link>
 
@@ -139,8 +139,8 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Right Controls: Language Selector, Theme Toggle & User Pill */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          {/* Right Controls: Language Selector, Theme Toggle & User Actions */}
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
             {/* Language Selector Dropdown */}
             <div className="relative">
               <button
@@ -150,12 +150,12 @@ const Navbar = () => {
                   setShowDropdown(false);
                 }}
                 title={t('nav.selectLanguage')}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full border border-slate-200 dark:border-emerald-500/25 bg-slate-100 dark:bg-[#071612] hover:bg-slate-200 dark:hover:bg-[#0c241e] text-xs font-semibold text-slate-700 dark:text-slate-200 hover:text-[#00c985] dark:hover:text-[#00e599] transition-all hover-lift shadow-xs cursor-pointer"
+                className="flex items-center gap-1 px-2 py-1.5 sm:px-2.5 sm:py-1.5 rounded-full border border-slate-200 dark:border-emerald-500/25 bg-slate-100 dark:bg-[#071612] hover:bg-slate-200 dark:hover:bg-[#0c241e] text-xs font-semibold text-slate-700 dark:text-slate-200 hover:text-[#00c985] dark:hover:text-[#00e599] transition-all hover-lift shadow-xs cursor-pointer shrink-0"
               >
-                <Globe className="w-3.5 h-3.5 text-[#00c985] dark:text-[#00e599]" />
+                <Globe className="w-3.5 h-3.5 text-[#00c985] dark:text-[#00e599] shrink-0" />
                 <span className="text-xs font-bold">{currentLanguageObj.flag}</span>
                 <span className="hidden sm:inline text-xs">{currentLanguageObj.native}</span>
-                <ChevronDown className="w-3 h-3 text-slate-500 dark:text-slate-400" />
+                <ChevronDown className="hidden sm:inline w-3 h-3 text-slate-500 dark:text-slate-400" />
               </button>
 
               {showLangDropdown && (
@@ -203,7 +203,7 @@ const Navbar = () => {
               onClick={toggleTheme}
               aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
               title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-              className="p-2 rounded-full border border-slate-200 dark:border-emerald-500/20 bg-slate-100 dark:bg-[#071612] text-slate-600 dark:text-slate-300 hover:text-[#00c985] dark:hover:text-[#00e599] hover:border-emerald-500/40 transition-all flex items-center justify-center group"
+              className="p-1.5 sm:p-2 rounded-full border border-slate-200 dark:border-emerald-500/20 bg-slate-100 dark:bg-[#071612] text-slate-600 dark:text-slate-300 hover:text-[#00c985] dark:hover:text-[#00e599] hover:border-emerald-500/40 transition-all flex items-center justify-center group shrink-0"
             >
               {isDark ? (
                 <Sun className="h-4 w-4 text-amber-300 group-hover:rotate-45 transition-transform duration-300" />
@@ -212,8 +212,8 @@ const Navbar = () => {
               )}
             </button>
 
-            {/* Profile Chip: Compact on mobile, full on desktop */}
-            <div className="relative">
+            {/* Desktop Profile Chip (hidden on mobile, shown on md and larger) */}
+            <div className="relative hidden md:block">
               <button
                 onClick={() => {
                   setShowDropdown(!showDropdown);
@@ -228,8 +228,7 @@ const Navbar = () => {
                     <User className="w-4 h-4 text-[#00c985] dark:text-[#00e599]" />
                   )}
                 </div>
-                {/* Text hidden on small screens so it never overflows */}
-                <div className="hidden sm:flex flex-col text-left">
+                <div className="flex flex-col text-left">
                   <span className="text-xs font-bold text-slate-800 dark:text-white leading-tight truncate max-w-[110px]">
                     {user ? user.name : 'Patient User'}
                   </span>
@@ -292,7 +291,7 @@ const Navbar = () => {
               )}
             </div>
 
-            {/* Mobile Hamburger Menu Button */}
+            {/* Mobile Hamburger / Profile Menu Button (md:hidden) */}
             <button
               type="button"
               onClick={() => {
@@ -301,9 +300,18 @@ const Navbar = () => {
                 setShowLangDropdown(false);
               }}
               aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-              className="md:hidden p-2 rounded-full border border-slate-200 dark:border-emerald-500/25 bg-slate-100 dark:bg-[#071612] text-slate-700 dark:text-slate-200 hover:text-[#00c985] dark:hover:text-[#00e599] transition-all cursor-pointer flex items-center justify-center shrink-0"
+              className="md:hidden flex items-center gap-1.5 p-1.5 pl-2 pr-2 rounded-full border border-slate-200 dark:border-emerald-500/25 bg-slate-100 dark:bg-[#071612] text-slate-700 dark:text-slate-200 hover:text-[#00c985] dark:hover:text-[#00e599] transition-all cursor-pointer shrink-0"
             >
-              {mobileMenuOpen ? <X className="w-4 h-4 text-[#00e599]" /> : <Menu className="w-4 h-4" />}
+              {user ? (
+                <div className="w-6 h-6 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-[#00c985] dark:text-[#00e599] text-[10px] overflow-hidden shrink-0">
+                  {user.image ? <img src={user.image} alt={user.name} className="w-full h-full object-cover" /> : <User className="w-3.5 h-3.5" />}
+                </div>
+              ) : null}
+              {mobileMenuOpen ? (
+                <X className="w-4 h-4 text-[#00e599]" />
+              ) : (
+                <Menu className="w-4 h-4 text-[#00c985] dark:text-[#00e599]" />
+              )}
             </button>
           </div>
         </div>
